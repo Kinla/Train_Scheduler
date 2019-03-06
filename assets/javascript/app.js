@@ -15,9 +15,6 @@ var database = firebase.database();
 // Set up train folder
 var trainList = database.ref("/trainList");
 
-// Set up counter as train identifier
-var trainNumber;
-
 $("#submit").on("click", function (event){
     event.preventDefault();
 
@@ -38,19 +35,36 @@ $("#submit").on("click", function (event){
     var timeDifference = currentTime.diff(firstTrain, "minutes");
     console.log(timeDifference);
 
-    
+    // calculations
     if (timeDifference > 0){
         var remainder = timeDifference % frequency;
         var timeAway = frequency - remainder;
         var nextTrain = moment(currentTime.add(timeAway, "minutes")).format("hh:mm A");
         console.log(remainder, timeAway, nextTrain);
+
+        //Store on firebase
+        trainList.push({
+            "name": name,
+            "destination": destination,
+            "frequency": frequency,
+            "nextTrain": nextTrain,
+            "minutesAway": timeAway
+        });
+    
     } else {
         var timeAway = - timeDifference;
         var nextTrain = moment(firstTrain).format("hh:mm A");
         console.log(timeAway, nextTrain);
         
-
-    }
+        //Store on firebase
+        trainList.push({
+            "name": name,
+            "destination": destination,
+            "frequency": frequency,
+            "nextTrain": nextTrain,
+            "minutesAway": timeAway
+        });
+        };
 
 
     // Clear form
@@ -58,5 +72,18 @@ $("#submit").on("click", function (event){
     var destination = $("#destination").val("");
     var firstTrain = $("#firstTrain").val("");
     var frequency = $("#frequency").val("");
-})
+});
 
+//display train info
+trainList.on("value", function(snapshot) {
+    // Log everything that's coming out of snapshot
+    snapshot.forEach(function(){
+        var train = snapshot.val("name")
+        console.log(train)
+//        $("#table").append("<tr>"
+//            .append(snapshot.val()[0])
+//        )
+    })
+
+    
+});
