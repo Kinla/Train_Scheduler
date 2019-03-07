@@ -22,7 +22,7 @@
         <div class="card">
             <div class="card-header">Current Train Schedule</div>
             <div class="card-body">
-                <table class="table">
+                <table class="table text-center">
                 <thead>
                     <tr>
                     <th scope="col">Train Name</th>
@@ -30,16 +30,10 @@
                     <th scope="col">Frequency (min)</th>
                     <th scope="col">Next Arrival</th>
                     <th scope="col">Minutes Away</th>
+                    <th scope="col">Remove</th>
                 </tr>
                 </thead>
                 <tbody id="table">
-                    <tr>
-                    <td>Go Train</td>
-                    <td>Toronto</td>
-                    <td>60</td>
-                    <td>05:35 PM</td>
-                    <td>10</td>
-                </tr>
                 </tbody>
                 </table>                
             </div>
@@ -59,13 +53,14 @@
                     </div>
                     <div class="form-group">
                         <label>First Train Time (in Military Time)</label>
-                        <input class="form-control" type="input" placeholder="hh:mm" id="firstTrain">
+                        <input class="form-control" type="input" placeholder="HH:mm" id="firstTrain">
                     </div>
                     <div class="form-group">
                         <label>Frequency</label>
                         <input class="form-control" type="minute" placeholder="minute(s)" id="frequency">
                     </div>
-                    <button class="btn btn-primary" type="submit" id="submit">Submit</button>
+                    <button class="btn btn-primary mr-3" type="submit" id="submit">Submit</button>
+                    <button class="btn btn-primary" type="submit" id="update">Update Train</button>
                 </form>
             </div>
         </div>

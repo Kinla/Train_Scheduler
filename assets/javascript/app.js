@@ -26,46 +26,42 @@ $("#submit").on("click", function (event){
     console.log(name, destination, firstTrain, frequency);
 
     // Calculate next arrival
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(firstTrain, "HH:mm").subtract(1, "years");
+    console.log(firstTimeConverted);
+
+    // Current Time
     var currentTime = moment();
-    var timeArray = firstTrain.split(":");
-    console.log(timeArray);
-    var firstTrain = moment().hour(timeArray[0]).minute(timeArray[1]);
-    console.log(currentTime, firstTrain);
+    console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
 
-    var timeDifference = currentTime.diff(firstTrain, "minutes");
-    console.log(timeDifference);
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
 
-    // calculations
-    if (timeDifference > 0){
-        var remainder = timeDifference % frequency;
-        var timeAway = frequency - remainder;
-        var nextTrain = moment(currentTime.add(timeAway, "minutes")).format("hh:mm A");
-        console.log(remainder, timeAway, nextTrain);
+    // Time apart (remainder)
+    var tRemainder = diffTime % frequency;
+    console.log(tRemainder);
 
-        //Store on firebase
-        trainList.push({
-            "name": name,
-            "destination": destination,
-            "frequency": frequency,
-            "nextTrain": nextTrain,
-            "minutesAway": timeAway
-        });
+    // Minute Until Train
+    var tMinutesTillTrain = frequency - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+    // Next Train
+    var nextTrain = moment(moment().add(tMinutesTillTrain, "minutes")).format("hh:mm A");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm A"));
+
+
+    //Store on firebase
+    trainList.push({
+        "name": name,
+        "destination": destination,
+        "frequency": frequency,
+        "nextTrain": nextTrain,
+        "minutesAway": tMinutesTillTrain
+    });
+    console.log(name, destination, frequency, nextTrain, tMinutesTillTrain)
     
-    } else {
-        var timeAway = - timeDifference;
-        var nextTrain = moment(firstTrain).format("hh:mm A");
-        console.log(timeAway, nextTrain);
-        
-        //Store on firebase
-        trainList.push({
-            "name": name,
-            "destination": destination,
-            "frequency": frequency,
-            "nextTrain": nextTrain,
-            "minutesAway": timeAway
-        });
-        };
-
+    displayTrainInfo();
 
     // Clear form
     var name = $("#name").val("");
@@ -75,15 +71,51 @@ $("#submit").on("click", function (event){
 });
 
 //display train info
-trainList.on("value", function(snapshot) {
-    // Log everything that's coming out of snapshot
-    snapshot.forEach(function(){
-        var train = snapshot.val("name")
-        console.log(train)
-//        $("#table").append("<tr>"
-//            .append(snapshot.val()[0])
-//        )
-    })
-
+function displayTrainInfo (){
+    $("#table").empty();
+    trainList.on("child_added", function(childSnapshot) {
+        var train = childSnapshot.val().name;
+        var destination = childSnapshot.val().destination;
+        var frequency = childSnapshot.val().frequency;
+        var nextTrain = childSnapshot.val().nextTrain;
+        var minutesAway = childSnapshot.val().minutesAway;
+        var key = childSnapshot.key
+        console.log(train, destination, frequency, nextTrain, minutesAway, key)
     
+        //Display on page
+        var row = "<tr><td>" + train + "</td><td>" 
+                    + destination + "</td><td>" 
+                    + frequency + "</td><td>" 
+                    + nextTrain + "</td><td>" 
+                    + minutesAway 
+                    + "</td><td><button class='btn btn-primary removeTrain' id='" + key + "'>x</button></td></tr>";
+        $("#table").append(row)
+    });
+    
+
+}
+
+//Remove Train
+$(document).on("click", ".removeTrain", function(){
+    var key = $(this).attr("id")
+    var trainInfo = trainList.child(key).remove()
+    console.log("working on remove:" + key, trainInfo)
+
+    displayTrainInfo();
 });
+
+/*
+//Update Train
+$('#update').on("click", function(){
+    var key = $(this).attr("id")
+    var trainInfo = trainList.child(key).update()
+    console.log("working on remove:" + key, trainInfo)
+
+    displayTrainInfo();
+});
+*/
+
+//Ready document
+$(document).ready(function(){
+    displayTrainInfo();
+})

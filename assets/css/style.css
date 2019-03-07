@@ -1,3 +1,9 @@
 th, .card-header, label {
     font-weight: bold;
 }
+
+.removeTrain {
+    padding: 0px 4px;
+    height: 16px;
+    font-size: .5rem
+}
