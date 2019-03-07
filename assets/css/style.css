@@ -2,7 +2,7 @@ th, .card-header, label {
     font-weight: bold;
 }
 
-.removeTrain {
+.removeTrain, .updateTrain {
     padding: 0px 4px;
     height: 16px;
     font-size: .5rem

@@ -88,7 +88,9 @@ function displayTrainInfo (){
                     + frequency + "</td><td>" 
                     + nextTrain + "</td><td>" 
                     + minutesAway 
-                    + "</td><td><button class='btn btn-primary removeTrain' id='" + key + "'>x</button></td></tr>";
+                    + "</td><td><button class='btn btn-primary removeTrain' id='" + key + "'>x</button>"
+                    + "</td><td><button class='btn btn-primary updateTrain' data-toggle='modal' data-target='#newInfo' id='" + key + "'>x</button></td></tr>";
+
         $("#table").append(row)
     });
     
@@ -104,16 +106,46 @@ $(document).on("click", ".removeTrain", function(){
     displayTrainInfo();
 });
 
-/*
+
+//Associate update button to modal - map KEY
+$('#newInfo').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var  key = button.attr("id") 
+    var modal =$(this)
+    modal.find('.modal-title').attr("id", key)
+  })
+
+
 //Update Train
 $('#update').on("click", function(){
-    var key = $(this).attr("id")
-    var trainInfo = trainList.child(key).update()
-    console.log("working on remove:" + key, trainInfo)
+    var key = $(this).closest("#newInfo").find('.modal-title').attr("id")
+
+    var name = $(this).closest("#newInfo").find("#updateName").val();
+    var destination = $(this).closest("#newInfo").find("#updateDestination").val();
+    var frequency = $(this).closest("#newInfo").find("#updateFrequency").val();
+    var nextTrain = $(this).closest("#newInfo").find("#nextTrain").val();
+    var minutesAway = $(this).closest("#newInfo").find("#minutesAway").val();
+
+    //working on updates
+    /*
+    trainList.child(key).update({
+        "name": name,
+        "destination": destination,
+        "frequency": frequency,
+        "nextTrain": nextTrain,
+        "minutesAway": minutesAway
+    });
+    */
+
+
+
+
+    console.log("working on updating:" + key, name)
+
 
     displayTrainInfo();
 });
-*/
+
 
 //Ready document
 $(document).ready(function(){

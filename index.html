@@ -31,6 +31,7 @@
                     <th scope="col">Next Arrival</th>
                     <th scope="col">Minutes Away</th>
                     <th scope="col">Remove</th>
+                    <th scope="col">Update</th>
                 </tr>
                 </thead>
                 <tbody id="table">
@@ -60,11 +61,52 @@
                         <input class="form-control" type="minute" placeholder="minute(s)" id="frequency">
                     </div>
                     <button class="btn btn-primary mr-3" type="submit" id="submit">Submit</button>
-                    <button class="btn btn-primary" type="submit" id="update">Update Train</button>
                 </form>
             </div>
         </div>
 
+<!-- Modal for Train Update Form-->
+<div class="modal fade" id="newInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Please Enter New Train Info</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label>Train Name</label>
+                <input class="form-control" type="name" id="updateName">
+            </div>
+            <div class="form-group">
+                <label>Destination</label>
+                <input class="form-control" type="location" id="updateDestination">
+            </div>
+            <div class="form-group">
+                <label>Frequency</label>
+                <input class="form-control" type="input" id="updateFreqency">
+            </div>
+            <div class="form-group">
+                <label>Next Arrival</label>
+                <input class="form-control" type="input" id="updateNextArrival">
+            </div>
+            <div class="form-group">
+                <label>Minutes Away</label>
+                <input class="form-control" type="input" id="updateMinutesAWay">
+            </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="update">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
