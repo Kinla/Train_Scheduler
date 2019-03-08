@@ -70,7 +70,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Please Enter New Train Info</h5>
+        <h5 class="modal-title">Please Enter New Info</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -78,31 +78,18 @@
       <div class="modal-body">
         <form>
             <div class="form-group">
-                <label>Train Name</label>
-                <input class="form-control" type="name" id="updateName">
-            </div>
-            <div class="form-group">
-                <label>Destination</label>
-                <input class="form-control" type="location" id="updateDestination">
+                <label>First Train</label>
+                <input class="form-control" type="input" id="updateFirstTrain">
             </div>
             <div class="form-group">
                 <label>Frequency</label>
-                <input class="form-control" type="input" id="updateFreqency">
+                <input class="form-control" type="input" id="updateFrequency">
             </div>
-            <div class="form-group">
-                <label>Next Arrival</label>
-                <input class="form-control" type="input" id="updateNextArrival">
-            </div>
-            <div class="form-group">
-                <label>Minutes Away</label>
-                <input class="form-control" type="input" id="updateMinutesAWay">
-            </div>
-
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="update">Submit</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="updateTrain">Submit</button>
       </div>
     </div>
   </div>

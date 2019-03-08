@@ -64,10 +64,10 @@ $("#submit").on("click", function (event){
     displayTrainInfo();
 
     // Clear form
-    var name = $("#name").val("");
-    var destination = $("#destination").val("");
-    var firstTrain = $("#firstTrain").val("");
-    var frequency = $("#frequency").val("");
+    $("#name").val("");
+    $("#destination").val("");
+    $("#firstTrain").val("");
+    $("#frequency").val("");
 });
 
 //display train info
@@ -117,33 +117,45 @@ $('#newInfo').on('show.bs.modal', function (event) {
 
 
 //Update Train
-$('#update').on("click", function(){
+$('#updateTrain').on("click", function(event){
+    event.preventDefault();
+
     var key = $(this).closest("#newInfo").find('.modal-title').attr("id")
-
-    var name = $(this).closest("#newInfo").find("#updateName").val();
-    var destination = $(this).closest("#newInfo").find("#updateDestination").val();
     var frequency = $(this).closest("#newInfo").find("#updateFrequency").val();
-    var nextTrain = $(this).closest("#newInfo").find("#nextTrain").val();
-    var minutesAway = $(this).closest("#newInfo").find("#minutesAway").val();
+    var firstTrain = $(this).closest("#newInfo").find("#updateFirstTrain").val();
 
-    //working on updates
-    /*
-    trainList.child(key).update({
-        "name": name,
-        "destination": destination,
+    // Calculate next arrival
+    var firstTimeConverted = moment(firstTrain, "HH:mm").subtract(1, "years");
+
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+
+    // Time apart (remainder)
+    var tRemainder = diffTime % frequency;
+
+    // Minute Until Train
+    var tMinutesTillTrain = frequency - tRemainder;
+
+    // Next Train
+    var nextTrain = moment(moment().add(tMinutesTillTrain, "minutes")).format("hh:mm A");
+
+    console.log("last:" + key, frequency, nextTrain, tMinutesTillTrain)
+    
+    //Store on firebase
+    database.ref("trainList/" + key).update({
         "frequency": frequency,
         "nextTrain": nextTrain,
-        "minutesAway": minutesAway
+        "minutesAway": tMinutesTillTrain
     });
-    */
-
-
-
-
-    console.log("working on updating:" + key, name)
-
+    
 
     displayTrainInfo();
+
+    // Clear form
+
+    $("#updateFirstTrain").val("");
+    $("#updateFrequency").val("");
+
 });
 
 
