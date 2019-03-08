@@ -162,4 +162,4 @@ $('#updateTrain').on("click", function(event){
 //Ready document
 $(document).ready(function(){
     displayTrainInfo();
-})
+});
